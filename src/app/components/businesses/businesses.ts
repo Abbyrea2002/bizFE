@@ -1,27 +1,42 @@
 import { Component } from '@angular/core';
+import { BusinessData } from '../../services/business-data';
 
 @Component({
   imports: [],
+  providers: [BusinessData],
   selector: 'app-businesses',
   styleUrl: './businesses.css',
   templateUrl: './businesses.html',
 })
 export class Businesses {
-  business_list = [
-    {
-      "name" : "Pizza Planet",
-      "town" : "Coleraine",
-      "rating" : 5
-    },
-    {
-      "name" : "Wine Lake",
-      "town" : "Ballymoney",
-      "rating" : 3
-    },
-    {
-      "name" : "Sweet Desert",
-      "town" : "Ballymena",
-      "rating" : 4
+
+  business_list: any[] = [];
+  page: number = 1;
+
+  constructor(protected businessData: BusinessData) {}
+
+  ngOnInit() {
+    if (sessionStorage['page']){
+      this.page = Number(sessionStorage['page']);
     }
-  ]
+    this.business_list = this.businessData.getBusinesses(this.page);
+  }
+
+  previousPage(){
+    if(this.page > 0){
+      this.page = this.page - 1
+      sessionStorage['page'] = this.page.toString();
+      this.business_list = 
+      this.businessData.getBusinesses(this.page);
+    }
+  }
+
+  nextPage(){
+    if(this.page < this.businessData.getLastPageNumber()){
+      this.page = this.page + 1
+      sessionStorage['page'] = this.page.toString();
+      this.business_list = this.businessData.getBusinesses(this.page);
+    }
+  }
+
 }

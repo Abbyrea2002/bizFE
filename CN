@@ -1,0 +1,20 @@
+{
+    "id": "CL-987654",
+    "policyNumber": "POL-123456",
+    "claimantName": "Meredith Grey",
+    "policyInceptionDate": "02/11/2026",
+    "policyExpiryDate": "02/11/2027",
+    "dateOfLoss": "01-12-2026",
+    "claimType": "Collision",
+    "descriptionOfLoss": "Rear bumper damage due to a minor accident in a car park.",
+    "claimStatus": "submitted",
+    "createdAt": "2026-08-26T10:15:00Z",
+    "evidencePhotos": [
+        {
+            "imageId": "EVID-123456",
+            "blobUrl": "https://example.com/evidence/photo1.jpg",
+            "contentType": "image/jpeg",
+            "uploadedAt": "2026-08-26T10:20:00Z"
+        }
+    ]
+}
