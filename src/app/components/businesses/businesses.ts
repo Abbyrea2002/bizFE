@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { BusinessData } from '../../services/business-data';
+import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
-  imports: [],
+  imports: [RouterModule, RouterLink],
   providers: [BusinessData],
   selector: 'app-businesses',
   styleUrl: './businesses.css',
