@@ -13,11 +13,26 @@
                         {{ business.town }}
                     </div>
                     <div class="card-footer">
-                        Rating: {{ business.rating }}
+                        @for(star of [].constructor(business.rating); track $index){
+                            <img src="images/star.png"
+                            style="width:30px; height:30px">
+                        }
                     </div>
                 </div>
             }
         </div>
     </div>
+    <google-map height="400px" width="400px" [options]="map_options">
+        @for(location of map_locations; track location){
+            <map-advanced-marker #markerElem="mapAdvancedMarker"
+            [position]="{ lat: location.lat,
+            lng: location.lng}"></map-advanced-marker>
+        }
+    </google-map>
+    <h1>Description</h1>
+    <p>{{ loremIpsum() }}</p>
+    <h1>Weather</h1>
+    Description: {{ weather }}<br>
+    Temperature: {{ temperature }}<br>
 </div>
 
