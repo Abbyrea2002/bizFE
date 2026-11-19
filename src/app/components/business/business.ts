@@ -6,11 +6,13 @@ import { inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 
 
 
 @Component({
-  imports: [GoogleMapsModule],
+  imports: [GoogleMapsModule, ReactiveFormsModule],
   providers: [BusinessData],
   selector: 'app-business',
   styleUrl: './business.css',
@@ -25,6 +27,11 @@ export class Business {
   map_locations: any[] = []
   temperature: any;
   weather: any;
+  weatherIcon: any;
+  weatherIconURL: any;
+  temperatureColour: any;
+  private formBuilder = inject(FormBuilder);
+  reviewForm: any;
  
   private businessData = inject(BusinessData);
   private route = inject(ActivatedRoute);
@@ -35,6 +42,10 @@ export class Business {
       map(response => response.text.slice(0, 400))),
       { initialValue: '' }
   );
+
+  onSubmit(){
+    console.log(this.reviewForm.value)
+  }
 
  ngOnInit(){
   this.business_list = this.businessData.getBusiness(
@@ -57,12 +68,27 @@ export class Business {
    this.businessData.getCurrentWeather(this.business_lat, this.business_lng)
    .subscribe((response: any) => {
     let weatherResponse = response['weather'][0]['description'];
+
     this.temperature = 
     Math.round(response['main']['temp']);
     this.weather = 
     weatherResponse[0].toUpperCase() +
     weatherResponse.slice(1);
+    
+   this.weatherIcon = response['weather'][0]['icon'];
+   this.weatherIconURL = "https://openweathermap.org/img/wn/" + this.weatherIcon + "@4x.png";
+
+    this.temperatureColour = this.businessData.getTemperatureColour(this.temperature)
+
+   
+   });
+
+   this.reviewForm = this.formBuilder.group({
+    username: '',
+    comment: '',
+    stars: 5
    });
 
   }
+
 }

@@ -6,7 +6,13 @@
         "name": "Biz 0",
         "town": "Derry",
         "rating": 5,
-        "reviews": [],
+        "reviews": [
+            {
+                "username" : "User 999",
+                "comment" : "Lorem ipsum",
+                "stars" : 3
+            }
+        ],
         "num_employees": 79,
         "profit": [
             {
