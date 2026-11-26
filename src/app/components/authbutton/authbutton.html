@@ -1,0 +1,12 @@
+@if(auth.isAuthenticated$ | async){
+    <button class="btn btn-outline-light"
+    (click)="auth.logout({logoutParams:{returnTo: window.location.origin}})">
+Logout</button>
+}
+
+
+<button class="btn btn-outline-light"(click)="auth.loginWithRedirect({ appState: { target: this.router.url}})">
+    Log in
+</button>
+
+

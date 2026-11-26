@@ -77,4 +77,18 @@ export class BusinessData {
         })
     })
     }
+
+    postReview(id: any, review: any){
+        let newReview = {
+            'username' : review.username,
+            'comment' : review.comment,
+            'stars' : review.stars
+        };
+
+        jsonData.forEach(function(business){
+            if(business._id.$oid == id){
+                business['reviews'].push(newReview)
+            }
+        })
+    }
 }

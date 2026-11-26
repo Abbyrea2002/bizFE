@@ -8,11 +8,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, Validators } from '@angular/forms';
-
+import { AuthService } from '@auth0/auth0-angular';
+import { AsyncPipe } from '@angular/common';
 
 
 @Component({
-  imports: [GoogleMapsModule, ReactiveFormsModule],
+  imports: [GoogleMapsModule, ReactiveFormsModule, AsyncPipe],
   providers: [BusinessData],
   selector: 'app-business',
   styleUrl: './business.css',
@@ -36,6 +37,7 @@ export class Business {
   private businessData = inject(BusinessData);
   private route = inject(ActivatedRoute);
   private http = inject(HttpClient);
+  private auth = inject(AuthService)
 
   readonly loremIpsum = toSignal(
     this.businessData.getLoremIpsum(1).pipe(
@@ -43,9 +45,7 @@ export class Business {
       { initialValue: '' }
   );
 
-  onSubmit(){
-    console.log(this.reviewForm.value)
-  }
+ 
 
  ngOnInit(){
   this.business_list = this.businessData.getBusiness(
@@ -84,11 +84,33 @@ export class Business {
    });
 
    this.reviewForm = this.formBuilder.group({
-    username: '',
-    comment: '',
+    username: ['', Validators.required],
+    comment: ['', Validators.required],
     stars: 5
    });
 
+  }
+
+   onSubmit(){
+     this.businessData.postReview(this.route.snapshot.paramMap.get('id'),
+                  this.reviewForm.value);
+      this.reviewForm.reset();
+
+  }
+
+  isInvalid(control: any){
+    return this.reviewForm.controls[control].invalid && 
+    this.reviewForm.controls[control].touched;
+  }
+
+  isUntouched(){
+    return this.reviewForm.controls.username.pristine || this.reviewForm.controls.comment.pristine;
+  }
+
+  isIncomplete(){
+    return this.isInvalid('username') || 
+    this.isInvalid('comment') || 
+    this.isUntouched();
   }
 
 }
